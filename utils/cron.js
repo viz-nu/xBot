@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { runTask } from './task.js';
+import { runTask,runReply } from './task.js';
 export const startCronJob = () => {
     cron.schedule('*/15 * * * *', () => {
         console.log("cronjob Triggered");
@@ -8,4 +8,13 @@ export const startCronJob = () => {
         scheduled: true,
         timezone: "Asia/Kolkata" // Set timezone to India/Kolkata (IST)
     });
+
+    cron.schedule('*/15 * * * *', () => {
+        console.log("cronjob Triggered");
+        runReply();
+    }, {
+        scheduled: true,
+        timezone: "Asia/Kolkata" // Set timezone to India/Kolkata (IST)
+    });
 };
+

@@ -81,11 +81,9 @@ export const get_mentions_since = async (accessToken, userId, last_mention_id) =
             headers: { Authorization: `Bearer ${accessToken}` },
             params: { 'max_results': 20, 'expansions': 'author_id', 'since_id': last_mention_id }
         })
-
-        console.log("mentionsData", data);
-        return { data: data.data, meta: data.meta, users: data.includes.users };
+        return { mentions: data.data, meta: data.meta, users: data.includes.users };
     } catch (error) {
-        console.error(error);
+        console.error(error.response.data);
 
     }
 }
@@ -100,12 +98,12 @@ export const reply_to_comment = async (accessToken, reply, id) => {
             headers: { Authorization: `Bearer ${accessToken}` }
         })
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
     }
 }
 export const check_and_reply_to_mentions = async (userName, accessToken, userId, last_mention_id) => {
     try {
-        const { data: mentions, meta, users } = await get_mentions_since(accessToken, userId, last_mention_id)
+        const { mentions, meta, users } = await get_mentions_since(accessToken, userId, last_mention_id)
         const authorIdToUsername = users.reduce((acc, user) => {
             acc[user.id] = user.username;
             return acc;
@@ -116,6 +114,6 @@ export const check_and_reply_to_mentions = async (userName, accessToken, userId,
         }
         return meta.newest_id
     } catch (error) {
-        console.log("Error while checking and replying to mentions:", error);
+        console.log("Error while checking and replying to mentions:", error.response.data);
     }
 }

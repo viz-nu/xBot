@@ -30,7 +30,7 @@ export const runReply = async () => {
                 await User.findOneAndUpdate({ userId: user.userId }, { accessToken: access_token, refreshToken: refresh_token });
                 user.accessToken = access_token
             }
-            let newSince_id = await check_and_reply_to_mentions(user.username, user.accessToken, user.userId, user.sinceId)
+            let newSince_id = await check_and_reply_to_mentions(user.username, user.accessToken, user.userId, user.sinceId || null)
             await User.findOneAndUpdate({ userId: user.userId }, { sinceId: newSince_id });
 
             console.log("checked replied");

@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { runTask } from './task.js';
 export const startCronJob = () => {
-    cron.schedule('*/2 * * * *', () => {
+    cron.schedule('*/15 * * * *', () => {
         console.log("cronjob Triggered");
         runTask();
     }, {

@@ -1,9 +1,9 @@
 import cron from 'node-cron';
-import { runTask,runReply } from './task.js';
+import { runTask, runReply } from './task.js';
 export const startCronJob = () => {
     cron.schedule('*/1 * * * *', () => {
         console.log("cronjob Triggered");
-        // runTask();
+        runTask();
         runReply();
     }, {
         scheduled: true,

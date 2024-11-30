@@ -6,7 +6,7 @@ export const generatePost = async (prompt) => {
             model: "gpt-3.5-turbo-0125",
             messages: [{
                 role: "system",
-                content: `${prompt}`
+                content: prompt
             }],
         });
         let botPost = response.choices[0].message.content

@@ -117,3 +117,47 @@ export const check_and_reply_to_mentions = async (userName, accessToken, userId,
         console.log("Error while checking and replying to mentions:", error.response.data);
     }
 }
+export const getUserIdByUsername = async (username, accessToken) => {
+    try {
+        const url = `https://api.twitter.com/2/users/by/username/${username}`;
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const response = await axios.get(url, { headers });
+        return response.data?.data?.id || null;
+    } catch (error) {
+        console.error(`Error fetching user ID for ${username}:`, error.response?.data || error.message);
+        return null;
+    }
+}
+export const getUserTweets = async (userId, accessToken) => {
+    try {
+        const url = `https://api.twitter.com/2/users/${userId}/tweets`;
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const params = {
+            max_results: 20,
+            expansions: 'author_id',
+        };
+        const response = await axios.get(url, { headers, params });
+        return {
+            tweets: response.data?.data || [],
+            usersInfo: response.data?.includes?.users || [],
+        };
+    } catch (error) {
+        console.error(`Error fetching tweets for user ID ${userId}:`, error.response?.data || error.message);
+        return { tweets: [], usersInfo: [] };
+    }
+}
+export const replyToTweet = async (tweetText, inReplyToTweetId, accessToken) => {
+    try {
+        const headers = { Authorization: `Bearer ${accessToken}` };
+        const payload = {
+            text: tweetText,
+            reply: { in_reply_to_tweet_id: inReplyToTweetId },
+        };
+        const response = await axios.post(`https://api.twitter.com/2/tweets`, payload, { headers });
+        console.log(`Reply posted successfully to tweet ${inReplyToTweetId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error posting reply to tweet ${inReplyToTweetId}:`, error.response?.data || error.message);
+        return null;
+    }
+}

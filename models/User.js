@@ -7,7 +7,8 @@ const userSchema = new Schema({
     accessToken: { type: String },
     refreshToken: { type: String },
     prompt: { type: String, },
-    sinceId: { type: String, }
+    sinceId: { type: String, },
+    following: [{ type: String }]
 }, {
     timestamps: true
 });
